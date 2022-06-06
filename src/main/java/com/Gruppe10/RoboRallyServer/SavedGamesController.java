@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// @author Xiao Chen
+// @author Mark Bidstrup & Xiao Chen
 @RestController
 public class SavedGamesController {
 

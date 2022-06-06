@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen & Mark
         return !games.contains(temp);
     }
 
-    public static GameStateTemplate loadGame(String boardname) { // @author Xiao Chen
+    public static GameStateTemplate loadGame(String boardname) {
         ClassLoader classLoader = GamesService.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("savedgames" + "/" + boardname + "." + "json");
         if (inputStream == null) {
