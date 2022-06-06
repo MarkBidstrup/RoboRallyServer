@@ -25,9 +25,13 @@ public class SavedGamesController {
     }
 
     @GetMapping("/savedGames/{gameID}")
-    public ResponseEntity<GameStateTemplate> getGameStateTemplate(@PathVariable String gameID) {
+    public ResponseEntity<String> getGameStateTemplate(@PathVariable String gameID) {
         GameStateTemplate p = gamesService.getGameStateTemplate(gameID);
-        return ResponseEntity.ok().body(p);
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+        String boardJSON = gson.toJson(p);
+        return ResponseEntity.ok().body(boardJSON);
     }
 
     @PostMapping("/savedGames")
