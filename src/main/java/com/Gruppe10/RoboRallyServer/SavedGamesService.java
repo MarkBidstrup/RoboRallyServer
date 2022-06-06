@@ -15,28 +15,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GamesService implements IGamesService { // @author Xiao Chen & Mark Bidstrup
-    ArrayList<GameStateTemplate> games;
+public class SavedGamesService implements IGamesService { // @author Xiao Chen & Mark Bidstrup
+    ArrayList<GameStateTemplate> savedGames;
 
-    public GamesService() {
-        games = new ArrayList<>();
-        games.add(loadGame("EasyIntro"));
-        games.add(loadGame("CheckpointChallenge"));
-        games.add(loadGame("ConveyorBeltMayhem"));
+    public SavedGamesService() {
+        savedGames = new ArrayList<>();
+        savedGames.add(loadGame("EasyIntro_1"));
+        savedGames.add(loadGame("CheckpointChallenge_1"));
+        savedGames.add(loadGame("ConveyorBeltMayhem_1"));
     }
 
     @Override
     public List<String> findAll() {
         List<String> result = new ArrayList<>();
-        for (GameStateTemplate g : games)
+        for (GameStateTemplate g : savedGames)
             result.add(g.board.boardName + "_" + g.gameId);
         return result;
     }
 
     @Override
     public GameStateTemplate getGameStateTemplate(String boardname_gameID) {
-        if (!games.isEmpty()) {
-            for(GameStateTemplate p : games) {
+        if (!savedGames.isEmpty()) {
+            for(GameStateTemplate p : savedGames) {
                 String str = p.board.boardName + "_" +p.gameId;
                 if(str.equals(boardname_gameID)) {
                     return p;
@@ -52,7 +52,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen & Mark
         if (getGameStateTemplate(str) != null)
             return false;
         else {
-            games.add(p);
+            savedGames.add(p);
             return true;
         }
     }
@@ -61,21 +61,21 @@ public class GamesService implements IGamesService { // @author Xiao Chen & Mark
     public boolean updateGameStateTemplate(GameStateTemplate p) {
         String gameID = p.board.boardName + "_" + p.gameId;
         if (getGameStateTemplate(gameID) != null)
-            games.remove(getGameStateTemplate(gameID));
-        games.add(p);
+            savedGames.remove(getGameStateTemplate(gameID));
+        savedGames.add(p);
         return true;
     }
 
     @Override
     public boolean deleteGameStateTemplate(String boardname_gameID) {
         GameStateTemplate temp = getGameStateTemplate(boardname_gameID);
-        games.remove(temp);
-        return !games.contains(temp);
+        savedGames.remove(temp);
+        return !savedGames.contains(temp);
     }
 
-    public static GameStateTemplate loadGame(String boardname) {
-        ClassLoader classLoader = GamesService.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("savedgames" + "/" + boardname + "." + "json");
+    public static GameStateTemplate loadGame(String boardname_ID) {
+        ClassLoader classLoader = SavedGamesService.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("savedgames" + "/" + boardname_ID + "." + "json");
         if (inputStream == null) {
             return null;
         }
