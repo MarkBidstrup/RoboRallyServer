@@ -1,17 +1,114 @@
 package com.Gruppe10.RoboRallyServer;
 
 import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
+import com.Gruppe10.RoboRallyServer.Model.Lobby;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class GamesService implements IGamesService { // @author Xiao Chen
     ArrayList<GameStateTemplate> games;
+    ArrayList<GameStateTemplate> onlineGames;
+    ArrayList<Lobby> lobbies;
 
     public GamesService() {
         games = new ArrayList<>();
+        onlineGames= new ArrayList<>();
+        lobbies= new ArrayList<>();
+    }
+
+    //Golbas
+    @Override
+    public boolean createGame(GameStateTemplate template) {
+        String str = template.board.boardName + "_" +template.gameId;
+        if (getGameStateTemplate(str) != null)
+            return false;
+        else {
+            onlineGames.add(template);
+            return true;
+        }
+    }
+
+    //Golbas
+    @Override
+    public boolean createLobby(String boardname, String gameId, int players) {
+
+        boolean exist= false;
+        for(Lobby lb:lobbies ){
+            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+                exist= true;
+            };
+        }
+
+        if(exist == false){
+            Lobby lobby = new Lobby();
+            lobby.boardname= boardname;
+            lobby.gameId= gameId;
+            lobby.players=players;
+            lobby.numberOfJoined= 1;
+            lobbies.add(lobby);
+            return true;
+        }
+        return false;
+    }
+
+    //Golbas
+    @Override
+    public int getNumberOfJoinedPlayers(String boardname, String gameId){
+        for(Lobby lb:lobbies ){
+            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+                return lb.numberOfJoined;
+            };
+        }
+        return 0;
+    }
+
+    //Golbas
+    @Override
+    public int getMaxNumberOfPlayers(String boardname, String gameId){
+        for(Lobby lb:lobbies ){
+            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+                return lb.players;
+            };
+        }
+        return 0;
+    }
+
+    //Golbas
+    @Override
+    public List<String> getLobbies(){
+        List<String> lobbyList = new ArrayList<>();
+        for (Lobby lobby : lobbies)
+            lobbyList.add("Board: " + lobby.boardname + " - GameID: " + lobby.gameId);
+        return lobbyList;
+    }
+
+    //Golbas
+    @Override
+    public GameStateTemplate getLobbyGame(String boardname, int gameId) {
+        if (!onlineGames.isEmpty()) {
+            for(GameStateTemplate game : onlineGames) {
+                if(game.board.boardName.equals(boardname)  && game.gameId.equals(gameId) ){
+                    return game;
+                };
+            }
+        }
+        return null;
+    }
+
+    //Golbas
+    @Override
+    public boolean joinLobby(String boardname,int gameId){
+        for(Lobby lb:lobbies ){
+            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+                lb.numberOfJoined+= 1;
+                return true;
+            };
+        }
+        return false;
     }
 
     @Override
