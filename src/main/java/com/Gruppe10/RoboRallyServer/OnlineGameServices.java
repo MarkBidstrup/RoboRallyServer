@@ -5,26 +5,25 @@ import com.Gruppe10.RoboRallyServer.Model.Lobby;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+/*
+@author Golbas Haidari
+ */
 @Service
-public class GamesService implements IGamesService { // @author Xiao Chen
-    ArrayList<GameStateTemplate> games;
+public class OnlineGameServices implements IOnlineGameServices{
     ArrayList<GameStateTemplate> onlineGames;
     ArrayList<Lobby> lobbies;
 
-    public GamesService() {
-        games = new ArrayList<>();
+    public OnlineGameServices() {
         onlineGames= new ArrayList<>();
         lobbies= new ArrayList<>();
     }
 
-    //Golbas
     @Override
     public boolean createGame(GameStateTemplate template) {
-        String str = template.board.boardName + "_" +template.gameId;
-        if (getGameStateTemplate(str) != null)
+        if (onlineGames.stream().filter(game-> (game.board.boardName.equals(template.board.boardName) &&
+                                                game.gameId== template.gameId)).findAny().orElse(null) != null)
             return false;
         else {
             onlineGames.add(template);
@@ -32,7 +31,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen
         }
     }
 
-    //Golbas
+
     @Override
     public boolean createLobby(String boardname, int gameId, int players) {
 
@@ -48,14 +47,14 @@ public class GamesService implements IGamesService { // @author Xiao Chen
             lobby.boardname= boardname;
             lobby.gameId= gameId;
             lobby.players=players;
-            lobby.numberOfJoined= 0;
+            lobby.numberOfJoined= 1;
             lobbies.add(lobby);
             return true;
         }
         return false;
     }
 
-    //Golbas
+
     @Override
     public int getNumberOfJoinedPlayers(String boardname, int gameId){
         for(Lobby lb:lobbies ){
@@ -66,7 +65,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen
         return 0;
     }
 
-    //Golbas
+
     @Override
     public int getMaxNumberOfPlayers(String boardname, int gameId){
         for(Lobby lb:lobbies ){
@@ -77,7 +76,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen
         return 0;
     }
 
-    //Golbas
+
     @Override
     public List<String> getLobbies(){
         List<String> lobbyList = new ArrayList<>();
@@ -89,7 +88,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen
         return lobbyList;
     }
 
-    //Golbas
+
     @Override
     public GameStateTemplate getLobbyGame(String boardname, int gameId) {
         if (!onlineGames.isEmpty()) {
@@ -102,7 +101,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen
         return null;
     }
 
-    //Golbas
+
     @Override
     public boolean joinLobby(String boardname,int gameId){
         for(Lobby lb:lobbies ){
@@ -112,53 +111,5 @@ public class GamesService implements IGamesService { // @author Xiao Chen
             };
         }
         return false;
-    }
-
-    @Override
-    public List<String> findAll() {
-        List<String> result = new ArrayList<>();
-        for (GameStateTemplate g : games)
-            result.add("Board: " + g.board.boardName + " - GameID: " + g.gameId);
-        return result;
-    }
-
-    @Override
-    public GameStateTemplate getGameStateTemplate(String boardname_gameID) {
-        if (!games.isEmpty()) {
-            for(GameStateTemplate p : games) {
-                String str = p.board.boardName + "_" +p.gameId;
-                if(str.equals(boardname_gameID)) {
-                    return p;
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean addGameStateTemplate(GameStateTemplate p) {
-        String str = p.board.boardName + "_" +p.gameId;
-        if (getGameStateTemplate(str) != null)
-            return false;
-        else {
-            games.add(p);
-            return true;
-        }
-    }
-
-    @Override
-    public boolean updateGameStateTemplate(GameStateTemplate p) {
-        String gameID = p.board.boardName + "_" + p.gameId;
-        if (getGameStateTemplate(gameID) != null)
-            games.remove(getGameStateTemplate(gameID));
-        games.add(p);
-        return true;
-    }
-
-    @Override
-    public boolean deleteGameStateTemplate(String boardname_gameID) {
-        GameStateTemplate temp = getGameStateTemplate(boardname_gameID);
-        games.remove(temp);
-        return !games.contains(temp);
     }
 }

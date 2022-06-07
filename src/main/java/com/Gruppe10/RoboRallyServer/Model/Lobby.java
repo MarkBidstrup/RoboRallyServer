@@ -1,6 +1,8 @@
 package com.Gruppe10.RoboRallyServer.Model;
 
-//Golbas
+/*
+@author Golbas Haidari
+ */
 public class Lobby {
     public String boardname;
     public int gameId;

@@ -9,23 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
-// @author Mark Bidstrup & Xiao Chen
+// @author Deniz Isikli & Xiao Chen
 @RestController
-public class SavedGamesController {
-
+public class GameStateController {
     @Autowired
-    private IGamesService gamesService;
+    private IGameState gamesService;
 
-    @GetMapping("/savedGames")
-    public ResponseEntity<List> getListOfGames() {
-        List<String> list = gamesService.findAll();
-        return ResponseEntity.ok().body(list);
-    }
-
-    @GetMapping("/savedGames/{gameID}")
+    @GetMapping("/gameState/{gameID}")
     public ResponseEntity<String> getGameStateTemplate(@PathVariable String gameID) {
         GameStateTemplate p = gamesService.getGameStateTemplate(gameID);
         GsonBuilder simpleBuilder = new GsonBuilder().
@@ -35,19 +27,17 @@ public class SavedGamesController {
         return ResponseEntity.ok().body(boardJSON);
     }
 
-    @PostMapping("/savedGames")
+    @PostMapping("/gameState")
     public ResponseEntity<String> addGameStateTemplate(@RequestBody String p) {
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
         GameStateTemplate t = gson.fromJson(p, GameStateTemplate.class);
-        boolean added = gamesService.addGameStateTemplate(t);
-        if(added)
-            return ResponseEntity.ok().body("added");
-        else
-            return ResponseEntity.internalServerError().body("not added");       }
+        boolean added = gamesService.updateGameStateTemplate(t);
+        return ResponseEntity.ok().body("updated");
+    }
 
-    @PutMapping("/savedGames/{gameID}")
+    @PutMapping("/gameState/{gameID}")
     public ResponseEntity<String > updateGameStateTemplate(@PathVariable String gameID, @RequestBody String p) {
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
@@ -56,12 +46,4 @@ public class SavedGamesController {
         gamesService.updateGameStateTemplate(t);
         return ResponseEntity.ok().body("updated");
     }
-
-    @DeleteMapping("/savedGames/{gameID}")
-    public ResponseEntity<String> deleteGame(@PathVariable String gameID) {
-        boolean deleted = gamesService.deleteGameStateTemplate(gameID);
-        if(deleted)
-            return ResponseEntity.ok().body("deleted");
-        else
-            return ResponseEntity.internalServerError().body("not deleted");    }
 }
