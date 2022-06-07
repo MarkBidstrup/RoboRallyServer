@@ -34,11 +34,11 @@ public class GamesService implements IGamesService { // @author Xiao Chen
 
     //Golbas
     @Override
-    public boolean createLobby(String boardname, String gameId, int players) {
+    public boolean createLobby(String boardname, int gameId, int players) {
 
         boolean exist= false;
         for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
                 exist= true;
             };
         }
@@ -48,7 +48,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen
             lobby.boardname= boardname;
             lobby.gameId= gameId;
             lobby.players=players;
-            lobby.numberOfJoined= 1;
+            lobby.numberOfJoined= 0;
             lobbies.add(lobby);
             return true;
         }
@@ -57,22 +57,22 @@ public class GamesService implements IGamesService { // @author Xiao Chen
 
     //Golbas
     @Override
-    public int getNumberOfJoinedPlayers(String boardname, String gameId){
+    public int getNumberOfJoinedPlayers(String boardname, int gameId){
         for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
                 return lb.numberOfJoined;
-            };
+            }
         }
         return 0;
     }
 
     //Golbas
     @Override
-    public int getMaxNumberOfPlayers(String boardname, String gameId){
+    public int getMaxNumberOfPlayers(String boardname, int gameId){
         for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
                 return lb.players;
-            };
+            }
         }
         return 0;
     }
@@ -81,8 +81,11 @@ public class GamesService implements IGamesService { // @author Xiao Chen
     @Override
     public List<String> getLobbies(){
         List<String> lobbyList = new ArrayList<>();
-        for (Lobby lobby : lobbies)
-            lobbyList.add("Board: " + lobby.boardname + " - GameID: " + lobby.gameId);
+        for (Lobby lobby : lobbies) {
+            if(lobby.numberOfJoined < lobby.players) {
+                lobbyList.add("Board: " + lobby.boardname + " - GameID: " + lobby.gameId);
+            }
+        }
         return lobbyList;
     }
 
@@ -91,9 +94,9 @@ public class GamesService implements IGamesService { // @author Xiao Chen
     public GameStateTemplate getLobbyGame(String boardname, int gameId) {
         if (!onlineGames.isEmpty()) {
             for(GameStateTemplate game : onlineGames) {
-                if(game.board.boardName.equals(boardname)  && game.gameId.equals(gameId) ){
+                if(game.board.boardName.equals(boardname)  && game.gameId == gameId ){
                     return game;
-                };
+                }
             }
         }
         return null;
@@ -103,7 +106,7 @@ public class GamesService implements IGamesService { // @author Xiao Chen
     @Override
     public boolean joinLobby(String boardname,int gameId){
         for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId.equals(gameId) ){
+            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
                 lb.numberOfJoined+= 1;
                 return true;
             };

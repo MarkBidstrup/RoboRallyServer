@@ -19,6 +19,7 @@ public class SavedGamesController {
     @Autowired
     private IGamesService gamesService;
 
+    //Golbas
     @PostMapping("/createGame")
     public ResponseEntity<String> createGame(@RequestBody String game) {
         GsonBuilder simpleBuilder = new GsonBuilder().registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
@@ -33,8 +34,9 @@ public class SavedGamesController {
         }
     }
 
+    //Golbas
     @RequestMapping(path = "/createLobby/{boardname}/{gameId}/{players}", method = RequestMethod.GET)
-    public ResponseEntity<String> createLobby(@PathVariable String boardname, @PathVariable String gameId,@PathVariable int players ) {
+    public ResponseEntity<String> createLobby(@PathVariable String boardname, @PathVariable int gameId,@PathVariable int players ) {
         boolean created = gamesService.createLobby( boardname, gameId,  players);
         if(created == true) {
             return ResponseEntity.ok().body("created");
@@ -44,12 +46,14 @@ public class SavedGamesController {
         }
     }
 
+    //Golbas
     @RequestMapping(path = "/lobby/joinedPlayers/{boardname}/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getNumberOfJoinedPlayers(@PathVariable String boardname, @PathVariable String gameId){
+    public ResponseEntity<String> getNumberOfJoinedPlayers(@PathVariable String boardname, @PathVariable int gameId){
         int result= gamesService.getNumberOfJoinedPlayers(boardname,gameId);
         return ResponseEntity.ok().body(String.valueOf(result));
     }
 
+    //Golbas
     @RequestMapping(path = "/joinLobby/{boardname}/{gameId}", method = RequestMethod.GET)
     public ResponseEntity<String> joinLobby(@PathVariable String boardname, @PathVariable int gameId){
         boolean joined= gamesService.joinLobby(boardname,gameId);
@@ -61,21 +65,32 @@ public class SavedGamesController {
         }
     }
 
+    //Golbas
     @RequestMapping(path = "/lobby/maxPlayers/{boardname}/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getMaxNumberOfPlayers(@PathVariable String boardname, @PathVariable String gameId){
+    public ResponseEntity<String> getMaxNumberOfPlayers(@PathVariable String boardname, @PathVariable int gameId){
         int result= gamesService.getMaxNumberOfPlayers(boardname,gameId);
         return ResponseEntity.ok().body(String.valueOf(result));
     }
 
+    //Golbas
     @RequestMapping(path = "/lobby/{boardname}/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getLobbyGame(@PathVariable String boardname, @PathVariable String gameId){
-        GameStateTemplate result= gamesService.getLobbyGame(boardname,Integer.parseInt(gameId));
-        return ResponseEntity.ok().body(String.valueOf(result));
+    public ResponseEntity<String> getLobbyGame(@PathVariable String boardname, @PathVariable int gameId){
+        GameStateTemplate template = gamesService.getLobbyGame(boardname,gameId);
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+        String result = gson.toJson(template);
+        return ResponseEntity.ok().body(result);
     }
 
+    //Golbas
     @GetMapping("/lobbyGames")
     public ResponseEntity<List> getListOflobbyGames() {
         List<String> list = gamesService.getLobbies();
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+        String result = gson.toJson(list);
         return ResponseEntity.ok().body(list);
     }
 

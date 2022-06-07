@@ -7,9 +7,9 @@ import java.util.List;
 // @author Xiao Chen  && @Golbas
 public interface IGamesService {
     public boolean createGame(GameStateTemplate template);
-    public boolean createLobby(String boardname, String gameId, int players);
-    public int getNumberOfJoinedPlayers(String boardname, String gameId);
-    public int getMaxNumberOfPlayers(String boardname,String gameId);
+    public boolean createLobby(String boardname, int gameId, int players);
+    public int getNumberOfJoinedPlayers(String boardname, int gameId);
+    public int getMaxNumberOfPlayers(String boardname,int gameId);
     public GameStateTemplate getLobbyGame(String boardname, int gameId);
     public List<String> getLobbies();
     public boolean joinLobby(String boardname,int gameId);
