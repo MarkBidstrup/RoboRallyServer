@@ -8,4 +8,8 @@ import java.util.List;
 public interface IGameState {
     public GameStateTemplate getGameStateTemplate(String boardname_gameID);
     public boolean updateGameStateTemplate(GameStateTemplate p);
-}
+    public Integer getProgrammingCounter(String key);
+    public void incrementProgrammingCounter(String key);
+    public void setProgrammingCounter(String key, Integer value);
+    public void addNewProgrammingCounter(String key);
+    }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// @author Deniz Isikli & Xiao Chen
+// @author Deniz Isikli, Xiao Chen & Mark Bidstrup
 @RestController
 public class GameStateController {
     @Autowired
@@ -28,22 +28,42 @@ public class GameStateController {
     }
 
     @PostMapping("/gameState")
-    public ResponseEntity<String> addGameStateTemplate(@RequestBody String p) {
+    public ResponseEntity<String> addGameStateTemplate(@RequestBody String gameID) {
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
-        GameStateTemplate t = gson.fromJson(p, GameStateTemplate.class);
+        GameStateTemplate t = gson.fromJson(gameID, GameStateTemplate.class);
         boolean added = gamesService.updateGameStateTemplate(t);
+        gamesService.addNewProgrammingCounter(gameID);
         return ResponseEntity.ok().body("updated");
     }
 
     @PutMapping("/gameState/{gameID}")
-    public ResponseEntity<String > updateGameStateTemplate(@PathVariable String gameID, @RequestBody String p) {
+    public ResponseEntity<String> updateGameStateTemplate(@PathVariable String gameID, @RequestBody String gameStateTemplate) {
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
-        GameStateTemplate t = gson.fromJson(p, GameStateTemplate.class);
+        GameStateTemplate t = gson.fromJson(gameStateTemplate, GameStateTemplate.class);
         gamesService.updateGameStateTemplate(t);
         return ResponseEntity.ok().body("updated");
     }
+
+    @GetMapping("/gameState/{gameID}/programmingCounter")
+    public ResponseEntity<Integer> getProgrammingCounter(@PathVariable String gameID) {
+        Integer programmingCounter = gamesService.getProgrammingCounter(gameID);
+        return ResponseEntity.ok().body(programmingCounter);
+    }
+
+    @PutMapping("/gameState/{gameID}/programmingCounter/set")
+    public ResponseEntity<String> setProgrammingCounter(@PathVariable String gameID, @RequestBody Integer value) {
+        gamesService.setProgrammingCounter(gameID,value);
+        return ResponseEntity.ok().body("updated");
+    }
+
+    @PutMapping("/gameState/{gameID}/programmingCounter/increment")
+    public ResponseEntity<String> incrementProgrammingCounter(@PathVariable String gameID) {
+        gamesService.incrementProgrammingCounter(gameID);
+        return ResponseEntity.ok().body("updated");
+    }
+
 }

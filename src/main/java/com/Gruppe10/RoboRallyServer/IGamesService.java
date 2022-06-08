@@ -11,4 +11,4 @@ public interface IGamesService {
     public boolean addGameStateTemplate(GameStateTemplate p);
     public boolean updateGameStateTemplate(GameStateTemplate p);
     public boolean deleteGameStateTemplate(String boardname_gameID);
-}
+    }

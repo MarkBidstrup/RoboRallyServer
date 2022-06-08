@@ -12,14 +12,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-// @author Deniz Isikli & Xiao Chen
+// @author Deniz Isikli, Xiao Chen & Mark Bidstrup
 @Service
 public class GameStateService implements IGameState{
     ArrayList<GameStateTemplate> currentGames;
+    HashMap<String, Integer> programmingCounter;
 
     public GameStateService() {
         currentGames = new ArrayList<>();
+        programmingCounter = new HashMap<>();
     }
 
     @Override
@@ -42,5 +45,25 @@ public class GameStateService implements IGameState{
             currentGames.remove(getGameStateTemplate(gameID));
         currentGames.add(p);
         return true;
+    }
+
+    @Override
+    public Integer getProgrammingCounter(String key) {
+        return programmingCounter.get(key);
+    }
+
+    @Override
+    public void incrementProgrammingCounter(String key) {
+        int oldValue = programmingCounter.get(key);
+        programmingCounter.replace(key,oldValue+1);
+    }
+
+    @Override
+    public void setProgrammingCounter(String key, Integer value) {
+        programmingCounter.replace(key, value);
+    }
+
+    public void addNewProgrammingCounter(String key) {
+        programmingCounter.put(key,0);
     }
 }
