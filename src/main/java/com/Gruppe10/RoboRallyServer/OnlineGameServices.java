@@ -2,6 +2,7 @@ package com.Gruppe10.RoboRallyServer;
 
 import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
 import com.Gruppe10.RoboRallyServer.Model.Lobby;
+import com.Gruppe10.RoboRallyServer.Model.PlayerTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class OnlineGameServices implements IOnlineGameServices{
     @Override
     public boolean createGame(GameStateTemplate template) {
         if (onlineGames.stream().filter(game-> (game.board.boardName.equals(template.board.boardName) &&
-                                                game.gameId== template.gameId)).findAny().orElse(null) != null)
+                game.gameId== template.gameId)).findAny().orElse(null) != null)
             return false;
         else {
             onlineGames.add(template);
@@ -33,64 +34,49 @@ public class OnlineGameServices implements IOnlineGameServices{
 
 
     @Override
-    public boolean createLobby(String boardname, int gameId, int players) {
-
-        boolean exist= false;
-        for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
-                exist= true;
-            };
-        }
-
-        if(exist == false){
-            Lobby lobby = new Lobby();
-            lobby.boardname= boardname;
-            lobby.gameId= gameId;
-            lobby.players=players;
-            lobby.numberOfJoined= 1;
-            lobbies.add(lobby);
-            return true;
-        }
-        return false;
-    }
-
-
-    @Override
     public int getNumberOfJoinedPlayers(String boardname, int gameId){
-        for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
-                return lb.numberOfJoined;
+        int numberOfJoined=0;
+        for(GameStateTemplate game:onlineGames ){
+            if(game.board.boardName.equals(boardname)  && game.gameId == gameId){
+                for(PlayerTemplate p: game.players){
+                    if(p.joined== true){
+                        numberOfJoined++;
+                    }
+                }
             }
         }
-        return 0;
+        return numberOfJoined;
     }
 
 
     @Override
     public int getMaxNumberOfPlayers(String boardname, int gameId){
-        for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
-                return lb.players;
+        int max=0;
+        for(GameStateTemplate game:onlineGames ){
+            if(game.board.boardName.equals(boardname)  && game.gameId == gameId){
+                max= game.players.size();
             }
         }
-        return 0;
+        return max;
     }
 
 
     @Override
-    public List<String> getLobbies(){
-        List<String> lobbyList = new ArrayList<>();
-        for (Lobby lobby : lobbies) {
-            if(lobby.numberOfJoined < lobby.players) {
-                lobbyList.add("Board: " + lobby.boardname + " - GameID: " + lobby.gameId);
+    public List<String> getOnlineGames(){
+        List<String> list = new ArrayList<>();
+        for (GameStateTemplate game : onlineGames) {
+            int joinedNr=getNumberOfJoinedPlayers(game.board.boardName, game.gameId);
+            int maxNr= getMaxNumberOfPlayers(game.board.boardName, game.gameId);
+            if( joinedNr < maxNr ) {
+                list.add("Board: " + game.board.boardName + " - GameID: " + game.gameId);
             }
         }
-        return lobbyList;
+        return list;
     }
 
 
     @Override
-    public GameStateTemplate getLobbyGame(String boardname, int gameId) {
+    public GameStateTemplate getOnlineGame(String boardname, int gameId) {
         if (!onlineGames.isEmpty()) {
             for(GameStateTemplate game : onlineGames) {
                 if(game.board.boardName.equals(boardname)  && game.gameId == gameId ){
@@ -103,10 +89,10 @@ public class OnlineGameServices implements IOnlineGameServices{
 
 
     @Override
-    public boolean joinLobby(String boardname,int gameId){
-        for(Lobby lb:lobbies ){
-            if(lb.boardname.equals(boardname)  && lb.gameId == gameId){
-                lb.numberOfJoined+= 1;
+    public boolean joinOnlineGame(String boardname,int gameId, int playernr){
+        for(GameStateTemplate game:onlineGames ){
+            if(game.board.boardName.equals(boardname)  && game.gameId == gameId){
+                game.players.get((playernr-1)).joined=true;
                 return true;
             };
         }

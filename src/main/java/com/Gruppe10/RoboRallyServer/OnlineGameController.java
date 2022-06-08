@@ -35,27 +35,16 @@ public class OnlineGameController {
     }
 
 
-    @RequestMapping(path = "/createLobby/{boardname}/{gameId}/{players}", method = RequestMethod.GET)
-    public ResponseEntity<String> createLobby(@PathVariable String boardname, @PathVariable int gameId, @PathVariable int players ) {
-        boolean created = services.createLobby( boardname, gameId,  players);
-        if(created == true) {
-            return ResponseEntity.ok().body("created");
-        }
-        else {
-            return ResponseEntity.internalServerError().body("not created");
-        }
-    }
-
-    @RequestMapping(path = "/lobby/joinedPlayers/{boardname}/{gameId}", method = RequestMethod.GET)
+    @RequestMapping(path = "/joinedPlayers/{boardname}/{gameId}", method = RequestMethod.GET)
     public ResponseEntity<String> getNumberOfJoinedPlayers(@PathVariable String boardname, @PathVariable int gameId){
         int result= services.getNumberOfJoinedPlayers(boardname,gameId);
         return ResponseEntity.ok().body(String.valueOf(result));
     }
 
 
-    @RequestMapping(path = "/joinLobby/{boardname}/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<String> joinLobby(@PathVariable String boardname, @PathVariable int gameId){
-        boolean joined= services.joinLobby(boardname,gameId);
+    @RequestMapping(path = "/joinOnlineGame/{boardname}/{gameId}/{playerNr}", method = RequestMethod.GET)
+    public ResponseEntity<String> joinOnlineGame(@PathVariable String boardname, @PathVariable int gameId, @PathVariable int playerNr){
+        boolean joined= services.joinOnlineGame(boardname,gameId, playerNr);
         if(joined == true) {
             return ResponseEntity.ok().body("joined");
         }
@@ -65,16 +54,16 @@ public class OnlineGameController {
     }
 
 
-    @RequestMapping(path = "/lobby/maxPlayers/{boardname}/{gameId}", method = RequestMethod.GET)
+    @RequestMapping(path = "/maxPlayers/{boardname}/{gameId}", method = RequestMethod.GET)
     public ResponseEntity<String> getMaxNumberOfPlayers(@PathVariable String boardname, @PathVariable int gameId){
         int result= services.getMaxNumberOfPlayers(boardname,gameId);
         return ResponseEntity.ok().body(String.valueOf(result));
     }
 
 
-    @RequestMapping(path = "/lobby/{boardname}/{gameId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getLobbyGame(@PathVariable String boardname, @PathVariable int gameId){
-        GameStateTemplate template = services.getLobbyGame(boardname,gameId);
+    @RequestMapping(path = "/onlineGame/{boardname}/{gameId}", method = RequestMethod.GET)
+    public ResponseEntity<String> getOnlineGame(@PathVariable String boardname, @PathVariable int gameId){
+        GameStateTemplate template = services.getOnlineGame(boardname,gameId);
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
@@ -82,9 +71,9 @@ public class OnlineGameController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/lobbyGames")
-    public ResponseEntity<List> getListOflobbyGames() {
-        List<String> list = services.getLobbies();
+    @GetMapping("/onlineGamesList")
+    public ResponseEntity<List> getOnlineGames() {
+        List<String> list = services.getOnlineGames();
         return ResponseEntity.ok().body(list);
     }
 }
