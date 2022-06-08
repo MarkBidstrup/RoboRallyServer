@@ -1,7 +1,6 @@
 package com.Gruppe10.RoboRallyServer;
 
 import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
-import com.Gruppe10.RoboRallyServer.Model.Lobby;
 import com.Gruppe10.RoboRallyServer.Model.PlayerTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,36 +13,28 @@ import java.util.List;
 @Service
 public class OnlineGameServices implements IOnlineGameServices{
     ArrayList<GameStateTemplate> onlineGames;
-    ArrayList<Lobby> lobbies;
 
     public OnlineGameServices() {
         onlineGames= new ArrayList<>();
-        lobbies= new ArrayList<>();
     }
 
     @Override
     public boolean createGame(GameStateTemplate template) {
-        if (onlineGames.stream().filter(game-> (game.board.boardName.equals(template.board.boardName) &&
-                game.gameId== template.gameId)).findAny().orElse(null) != null)
+        if ( onlineGames.stream().filter(game-> (game.board.boardName.equals(template.board.boardName) && game.gameId== template.gameId)).findAny().isPresent()){
             return false;
-        else {
-            onlineGames.add(template);
-            return true;
         }
+
+        onlineGames.add(template);
+        return true;
     }
 
 
     @Override
     public int getNumberOfJoinedPlayers(String boardname, int gameId){
         int numberOfJoined=0;
-        for(GameStateTemplate game:onlineGames ){
-            if(game.board.boardName.equals(boardname)  && game.gameId == gameId){
-                for(PlayerTemplate p: game.players){
-                    if(p.joined== true){
-                        numberOfJoined++;
-                    }
-                }
-            }
+        GameStateTemplate onlineGame= onlineGames.stream().filter(game -> game.board.boardName.equals(boardname)  && game.gameId == gameId).findAny().orElse(null);
+        if(onlineGames != null){
+            numberOfJoined= onlineGame.players.stream().filter(player -> (player.joined == true)).toList().size();
         }
         return numberOfJoined;
     }
@@ -51,13 +42,7 @@ public class OnlineGameServices implements IOnlineGameServices{
 
     @Override
     public int getMaxNumberOfPlayers(String boardname, int gameId){
-        int max=0;
-        for(GameStateTemplate game:onlineGames ){
-            if(game.board.boardName.equals(boardname)  && game.gameId == gameId){
-                max= game.players.size();
-            }
-        }
-        return max;
+        return onlineGames.stream().filter(game -> game.board.boardName.equals(boardname)  && game.gameId == gameId ).findAny().get().players.size();
     }
 
 
@@ -71,30 +56,23 @@ public class OnlineGameServices implements IOnlineGameServices{
                 list.add("Board: " + game.board.boardName + " - GameID: " + game.gameId);
             }
         }
+
         return list;
     }
 
 
     @Override
     public GameStateTemplate getOnlineGame(String boardname, int gameId) {
-        if (!onlineGames.isEmpty()) {
-            for(GameStateTemplate game : onlineGames) {
-                if(game.board.boardName.equals(boardname)  && game.gameId == gameId ){
-                    return game;
-                }
-            }
-        }
-        return null;
+        return onlineGames.stream().filter(game -> (game.board.boardName.equals(boardname)  && game.gameId == gameId )).findAny().orElse(null);
     }
 
 
     @Override
     public boolean joinOnlineGame(String boardname,int gameId, int playernr){
-        for(GameStateTemplate game:onlineGames ){
-            if(game.board.boardName.equals(boardname)  && game.gameId == gameId){
-                game.players.get((playernr-1)).joined=true;
-                return true;
-            };
+        GameStateTemplate onlineGame= onlineGames.stream().filter(game -> game.board.boardName.equals(boardname)  && game.gameId == gameId).findAny().orElse(null);
+        if(onlineGame != null){
+            onlineGame.players.get((playernr-1)).joined=true;
+            return true;
         }
         return false;
     }
