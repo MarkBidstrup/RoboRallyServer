@@ -42,6 +42,7 @@ public enum Command {
     FAST_FORWARD("Fast Fwd"),
     U_TURN("U-turn"),
     SPEED_ROUTINE("Fwd 3x"),
+    SPAM_DAMAGE("SPAM Damage"),
 
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT),
     OPTION_WEASEL_ROUTINE("Left, Right OR U-Turn", LEFT, RIGHT, U_TURN),
