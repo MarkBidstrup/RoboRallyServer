@@ -56,13 +56,13 @@ public class GameStateController {
     }
 
     @PutMapping("/gameState/{gameID}/programmingCounter/set")
-    public ResponseEntity<String> setProgrammingCounter(@PathVariable String gameID, @RequestBody Integer value) {
-        gamesService.setProgrammingCounter(gameID,value);
+    public ResponseEntity<String> setProgrammingCounter(@PathVariable String gameID, @RequestBody String value) {
+        gamesService.setProgrammingCounter(gameID,Integer.parseInt(value));
         return ResponseEntity.ok().body("updated");
     }
 
     @PutMapping("/gameState/{gameID}/programmingCounter/increment")
-    public ResponseEntity<String> incrementProgrammingCounter(@PathVariable String gameID, @RequestBody Integer value) {
+    public ResponseEntity<String> incrementProgrammingCounter(@PathVariable String gameID, @RequestBody String notUsed) {
         gamesService.incrementProgrammingCounter(gameID);
         return ResponseEntity.ok().body("updated");
     }
