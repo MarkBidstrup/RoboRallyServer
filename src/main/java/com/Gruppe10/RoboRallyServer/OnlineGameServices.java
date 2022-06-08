@@ -34,7 +34,7 @@ public class OnlineGameServices implements IOnlineGameServices{
         int numberOfJoined=0;
         GameStateTemplate onlineGame= onlineGames.stream().filter(game -> game.board.boardName.equals(boardname)  && game.gameId == gameId).findAny().orElse(null);
         if(onlineGames != null){
-            numberOfJoined= onlineGame.players.stream().filter(player -> (player.joined == true)).toList().size();
+            numberOfJoined= onlineGame.players.stream().filter(player -> (!player.playerName.equals("null"))).toList().size();
         }
         return numberOfJoined;
     }
@@ -68,10 +68,11 @@ public class OnlineGameServices implements IOnlineGameServices{
 
 
     @Override
-    public boolean joinOnlineGame(String boardname,int gameId, int playernr){
+    public boolean joinOnlineGame(String boardname,int gameId, String playerName){
         GameStateTemplate onlineGame= onlineGames.stream().filter(game -> game.board.boardName.equals(boardname)  && game.gameId == gameId).findAny().orElse(null);
         if(onlineGame != null){
-            onlineGame.players.get((playernr-1)).joined=true;
+            int index= onlineGame.players.stream().filter(player -> (!player.playerName.equals("null"))).toList().size();
+            onlineGame.players.get(index).playerName=playerName;
             return true;
         }
         return false;

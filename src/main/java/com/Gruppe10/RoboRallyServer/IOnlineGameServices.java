@@ -10,5 +10,5 @@ public interface IOnlineGameServices {
     public int getMaxNumberOfPlayers(String boardname,int gameId);
     public GameStateTemplate getOnlineGame(String boardname, int gameId);
     public List<String> getOnlineGames();
-    public boolean joinOnlineGame(String boardname,int gameId, int playernr);
+    public boolean joinOnlineGame(String boardname,int gameId, String playerName);
 }

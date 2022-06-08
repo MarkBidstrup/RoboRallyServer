@@ -42,9 +42,9 @@ public class OnlineGameController {
     }
 
 
-    @RequestMapping(path = "/joinOnlineGame/{boardname}/{gameId}/{playerNr}", method = RequestMethod.GET)
-    public ResponseEntity<String> joinOnlineGame(@PathVariable String boardname, @PathVariable int gameId, @PathVariable int playerNr){
-        boolean joined= services.joinOnlineGame(boardname,gameId, playerNr);
+    @RequestMapping(path = "/joinOnlineGame/{boardname}/{gameId}/{playerName}", method = RequestMethod.GET)
+    public ResponseEntity<String> joinOnlineGame(@PathVariable String boardname, @PathVariable int gameId, @PathVariable String playerName){
+        boolean joined= services.joinOnlineGame(boardname,gameId, playerName);
         if(joined == true) {
             return ResponseEntity.ok().body("joined");
         }
