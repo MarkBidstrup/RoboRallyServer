@@ -48,22 +48,23 @@ public class GameStateService implements IGameState{
     }
 
     @Override
-    public Integer getProgrammingCounter(String key) {
-        return programmingCounter.get(key);
+    public Integer getProgrammingCounter(String gameID) {
+        return programmingCounter.get(gameID);
     }
 
     @Override
-    public void incrementProgrammingCounter(String key) {
-        int oldValue = programmingCounter.get(key);
-        programmingCounter.replace(key,oldValue+1);
+    public void incrementProgrammingCounter(String gameID) {
+        int oldValue = programmingCounter.get(gameID);
+        programmingCounter.replace(gameID,oldValue+1);
     }
 
     @Override
-    public void setProgrammingCounter(String key, Integer value) {
-        programmingCounter.replace(key, value);
+    public void setProgrammingCounter(String gameID, Integer value) {
+        programmingCounter.replace(gameID, value);
     }
 
-    public void addNewProgrammingCounter(String key) {
-        programmingCounter.put(key,0);
+    @Override
+    public void addNewProgrammingCounter(String gameID) {
+        programmingCounter.put(gameID,0);
     }
 }

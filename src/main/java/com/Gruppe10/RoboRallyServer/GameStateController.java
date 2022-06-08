@@ -61,7 +61,7 @@ public class GameStateController {
     }
 
     @PutMapping("/gameState/{gameID}/programmingCounter/increment")
-    public ResponseEntity<String> incrementProgrammingCounter(@PathVariable String gameID) {
+    public ResponseEntity<String> incrementProgrammingCounter(@PathVariable String gameID, @RequestBody Integer value) {
         gamesService.incrementProgrammingCounter(gameID);
         return ResponseEntity.ok().body("updated");
     }
