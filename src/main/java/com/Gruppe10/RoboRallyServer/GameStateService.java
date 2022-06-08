@@ -54,8 +54,8 @@ public class GameStateService implements IGameState{
 
     @Override
     public void incrementProgrammingCounter(String gameID) {
-        int oldValue = programmingCounter.get(gameID);
-        programmingCounter.replace(gameID,oldValue+1);
+        Integer value = programmingCounter.get(gameID) + 1;
+        programmingCounter.replace(gameID,value);
     }
 
     @Override

@@ -28,12 +28,13 @@ public class GameStateController {
     }
 
     @PostMapping("/gameState")
-    public ResponseEntity<String> addGameStateTemplate(@RequestBody String gameID) {
+    public ResponseEntity<String> addGameStateTemplate(@RequestBody String gameState) {
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
-        GameStateTemplate t = gson.fromJson(gameID, GameStateTemplate.class);
+        GameStateTemplate t = gson.fromJson(gameState, GameStateTemplate.class);
         boolean added = gamesService.updateGameStateTemplate(t);
+        String gameID = t.board.boardName+"_"+t.gameId;
         gamesService.addNewProgrammingCounter(gameID);
         return ResponseEntity.ok().body("updated");
     }
