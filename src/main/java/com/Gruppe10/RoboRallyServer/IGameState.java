@@ -1,6 +1,8 @@
 package com.Gruppe10.RoboRallyServer;
 
+import com.Gruppe10.RoboRallyServer.Model.Command;
 import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
+import com.Gruppe10.RoboRallyServer.Model.PlayerTemplate;
 
 import java.util.List;
 
@@ -12,4 +14,5 @@ public interface IGameState {
     public void incrementProgrammingCounter(String gameID);
     public void setProgrammingCounter(String gameID, Integer value);
     public void addNewProgrammingCounter(String gameID);
-    }
+    boolean updatePlayerMat(String gameID, PlayerTemplate playerTemplate);
+}

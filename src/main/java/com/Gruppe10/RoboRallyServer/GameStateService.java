@@ -1,16 +1,9 @@
 package com.Gruppe10.RoboRallyServer;
 
-import com.Gruppe10.RoboRallyServer.Model.Adapter;
-import com.Gruppe10.RoboRallyServer.Model.FieldAction;
 import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
+import com.Gruppe10.RoboRallyServer.Model.PlayerTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,5 +59,17 @@ public class GameStateService implements IGameState{
     @Override
     public void addNewProgrammingCounter(String gameID) {
         programmingCounter.put(gameID,0);
+    }
+
+    @Override
+    public boolean updatePlayerMat(String gameID, PlayerTemplate playerTemplate) {
+        GameStateTemplate gameStateTemplate = getGameStateTemplate(gameID);
+        for (int i = 0; i < gameStateTemplate.players.size(); i++) {
+            if (gameStateTemplate.players.get(i).playerName.equals(playerTemplate.playerName)) {
+                gameStateTemplate.players.remove(i);
+                gameStateTemplate.players.add(i,playerTemplate);
+            }
+        }
+        return false;
     }
 }

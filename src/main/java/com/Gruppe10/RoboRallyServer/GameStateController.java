@@ -1,8 +1,6 @@
 package com.Gruppe10.RoboRallyServer;
 
-import com.Gruppe10.RoboRallyServer.Model.Adapter;
-import com.Gruppe10.RoboRallyServer.Model.FieldAction;
-import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
+import com.Gruppe10.RoboRallyServer.Model.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +62,16 @@ public class GameStateController {
     @PutMapping("/gameState/{gameID}/programmingCounter/increment")
     public ResponseEntity<String> incrementProgrammingCounter(@PathVariable String gameID, @RequestBody String notUsed) {
         gamesService.incrementProgrammingCounter(gameID);
+        return ResponseEntity.ok().body("updated");
+    }
+
+    @PutMapping("/gameState/{gameID}/playerMat")
+    public ResponseEntity<String> updatePlayerMat(@PathVariable String gameID, @RequestBody String playerTemplate) {
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+        PlayerTemplate t = gson.fromJson(playerTemplate, PlayerTemplate.class);
+        gamesService.updatePlayerMat(gameID, t);
         return ResponseEntity.ok().body("updated");
     }
 
