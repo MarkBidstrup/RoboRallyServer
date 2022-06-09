@@ -11,4 +11,10 @@ public interface ISavedGamesService {
     public boolean addGameStateTemplate(GameStateTemplate p);
     public boolean updateGameStateTemplate(GameStateTemplate p);
     public boolean deleteGameStateTemplate(String boardname_gameID);
-    }
+    public List<String> getAvailablePlayers(String boardname_gameID);
+    public boolean joinLoadedGame(String boardname_gameID, String playerName);
+    public boolean allPlayersJoined(String boardname_gameID);
+    public void leaveJoinedGame(String boardname_gameID, String playerName);
+    public boolean addActiveGame(String boardname_gameID);
+    public List<String> getActiveGames();
+}
