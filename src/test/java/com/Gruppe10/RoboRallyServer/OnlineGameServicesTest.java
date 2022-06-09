@@ -21,6 +21,7 @@ class OnlineGameServicesTest {
         gameId= 1;
     }
 
+    // UTC 20
     @Test
     void createGame() {
         GameStateTemplate template= loadGame(boardname+"_"+gameId);
@@ -31,6 +32,7 @@ class OnlineGameServicesTest {
 
     }
 
+    // UTC 21
     @Test
     void getOnlineGames() {
         createGame();
@@ -38,7 +40,7 @@ class OnlineGameServicesTest {
         assertEquals(1, nr);
     }
 
-
+    // UTC 22
     @Test
     void getOnlineGame() {
         createGame();
@@ -47,6 +49,7 @@ class OnlineGameServicesTest {
         assertEquals(1, game.gameId);
     }
 
+    // UTC 23
     @Test
     void getMaxNumberOfPlayers() {
         createGame();
@@ -54,7 +57,7 @@ class OnlineGameServicesTest {
         assertEquals(2, maxNr);
     }
 
-
+    // UTC 24
     @Test
     void joinOnlineGame() {
         createGame();
@@ -62,6 +65,7 @@ class OnlineGameServicesTest {
         assertEquals(true,joined);
     }
 
+    // UTC 25
     @Test
     void getNumberOfJoinedPlayers_1() {
         createGame();
@@ -69,6 +73,7 @@ class OnlineGameServicesTest {
         assertEquals(0, joinedPlayer);
     }
 
+    // UTC 26
     @Test
     void getNumberOfJoinedPlayers_2() {
         createGame();
