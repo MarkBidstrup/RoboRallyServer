@@ -3,6 +3,7 @@ package com.Gruppe10.RoboRallyServer;
 import com.Gruppe10.RoboRallyServer.Model.Adapter;
 import com.Gruppe10.RoboRallyServer.Model.FieldAction;
 import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
+import com.Gruppe10.RoboRallyServer.Model.PlayerTemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
@@ -12,14 +13,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class SavedGamesService implements IGamesService { // @author Xiao Chen & Mark Bidstrup
+public class SavedGamesService implements ISavedGamesService { // @author Xiao Chen & Mark Bidstrup
     ArrayList<GameStateTemplate> savedGames;
+    ArrayList<GameStateTemplate> activeGames;
+    HashMap<String, List<String>> playersJoined;
 
     public SavedGamesService() {
         savedGames = new ArrayList<>();
+        activeGames = new ArrayList<>();
+        playersJoined = new HashMap<>();
         savedGames.add(loadGame("EasyIntro_1"));
         savedGames.add(loadGame("CheckpointChallenge_1"));
         savedGames.add(loadGame("ConveyorBeltMayhem_1"));
@@ -36,9 +42,9 @@ public class SavedGamesService implements IGamesService { // @author Xiao Chen &
     @Override
     public GameStateTemplate getGameStateTemplate(String boardname_gameID) {
         if (!savedGames.isEmpty()) {
-            for(GameStateTemplate p : savedGames) {
-                String str = p.board.boardName + "_" +p.gameId;
-                if(str.equals(boardname_gameID)) {
+            for (GameStateTemplate p : savedGames) {
+                String str = p.board.boardName + "_" + p.gameId;
+                if (str.equals(boardname_gameID)) {
                     return p;
                 }
             }
@@ -48,7 +54,7 @@ public class SavedGamesService implements IGamesService { // @author Xiao Chen &
 
     @Override
     public boolean addGameStateTemplate(GameStateTemplate p) {
-        String str = p.board.boardName + "_" +p.gameId;
+        String str = p.board.boardName + "_" + p.gameId;
         if (getGameStateTemplate(str) != null)
             return false;
         else {
@@ -70,7 +76,81 @@ public class SavedGamesService implements IGamesService { // @author Xiao Chen &
     public boolean deleteGameStateTemplate(String boardname_gameID) {
         GameStateTemplate temp = getGameStateTemplate(boardname_gameID);
         savedGames.remove(temp);
+        playersJoined.remove(boardname_gameID);
         return !savedGames.contains(temp);
+    }
+
+    @Override
+    public List<String> getAvailablePlayers(String boardname_gameID) {
+        if (playersJoined.containsKey(boardname_gameID)) {
+            List<PlayerTemplate> playerTemplates = getGameStateTemplate(boardname_gameID).players;
+            List<String> joined = playersJoined.get(boardname_gameID);
+            List<String> result = new ArrayList<>();
+            for (PlayerTemplate player : playerTemplates) {
+                if (!joined.contains(player.playerName))
+                    result.add(player.playerName);
+            }
+            if (!result.isEmpty())
+                return result;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean joinLoadedGame(String boardname_gameID, String playerName) {
+        if (playerName == null || playerName.equals(""))
+            return false;
+        if (getGameStateTemplate(boardname_gameID) != null && playersJoined.containsKey(boardname_gameID)) {
+            for (String name : playersJoined.get(boardname_gameID)) {
+                if (name.equals(playerName))
+                    return false;
+            }
+            playersJoined.get(boardname_gameID).add(playerName);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean allPlayersJoined(String boardname_gameID) {
+        if (playersJoined.containsKey(boardname_gameID)) {
+            boolean joined = playersJoined.get(boardname_gameID).size() == getGameStateTemplate(boardname_gameID).players.size();
+            if (joined) {
+                activeGames.remove(getGameStateTemplate(boardname_gameID));
+            }
+            return joined;
+        }
+        return false;
+    }
+
+    @Override
+    public void leaveJoinedGame(String boardname_gameID, String playerName) {
+        if (playersJoined.containsKey(boardname_gameID)) {
+            playersJoined.get(boardname_gameID).remove(playerName);
+            if (playersJoined.get(boardname_gameID).isEmpty()) {
+                activeGames.remove(getGameStateTemplate(boardname_gameID));
+                playersJoined.remove(boardname_gameID);
+            }
+        }
+    }
+
+    @Override
+    public boolean addActiveGame(String boardname_gameID) {
+        if (!activeGames.contains(getGameStateTemplate(boardname_gameID))) {
+            activeGames.add(getGameStateTemplate(boardname_gameID));
+            playersJoined.remove(boardname_gameID);
+            playersJoined.put(boardname_gameID, new ArrayList<>());
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public List<String> getActiveGames() {
+        List<String> result = new ArrayList<>();
+        for (GameStateTemplate g : activeGames)
+            result.add(g.board.boardName + "_" + g.gameId);
+        return result;
     }
 
     public static GameStateTemplate loadGame(String boardname_ID) {

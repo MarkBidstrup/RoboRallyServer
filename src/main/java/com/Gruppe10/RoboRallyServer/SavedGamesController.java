@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 // @author Mark Bidstrup & Xiao Chen
@@ -17,7 +16,7 @@ import java.util.List;
 public class SavedGamesController {
 
     @Autowired
-    private IGamesService gamesService;
+    private ISavedGamesService gamesService;
 
     @GetMapping("/savedGames")
     public ResponseEntity<List> getListOfGames() {
@@ -64,4 +63,43 @@ public class SavedGamesController {
             return ResponseEntity.ok().body("deleted");
         else
             return ResponseEntity.internalServerError().body("not deleted");    }
+
+    @PutMapping("/savedGames/leaveJoinedGame/{gameID}")
+    public ResponseEntity<String> leaveJoinedGame(@PathVariable String gameID, @RequestBody String name) {
+        gamesService.leaveJoinedGame(gameID, name);
+        return ResponseEntity.ok().body("updated");
+    }
+
+    @GetMapping("/savedGames/getAvailPlayers/{gameID}")
+    public ResponseEntity<List<String>> getAvailablePlayers(@PathVariable String gameID) {
+        return ResponseEntity.ok().body(gamesService.getAvailablePlayers(   gameID));
+    }
+
+    @PutMapping("/savedGames/joinLoadedGame/{gameID}")
+    public ResponseEntity<String> joinLoadedGame(@PathVariable String gameID, @RequestBody String name) {
+        boolean joined = gamesService.joinLoadedGame(gameID, name);
+        if (joined)
+            return ResponseEntity.ok().body("Joined");
+        else return ResponseEntity.badRequest().body("Not joined");
+    }
+
+    @GetMapping ("/savedGames/allJoinedStatus/{gameID}")
+    public ResponseEntity<String> allPlayersJoined(@PathVariable String gameID) {
+        boolean allJoined = gamesService.allPlayersJoined(gameID);
+        if (allJoined)
+            return ResponseEntity.ok().body("Ready");
+        else return ResponseEntity.badRequest().body("Not ready");
+    }
+
+    @GetMapping ("/savedGames/activeGames")
+    public ResponseEntity<List<String>> getActiveGames() {
+        return ResponseEntity.ok().body(gamesService.getActiveGames() );
+    }
+
+    @PostMapping("/savedGames/activeGames")
+    public ResponseEntity<String> addActiveGame(@RequestBody String p) {
+        boolean added = gamesService.addActiveGame(p);
+        if (added)
+            return ResponseEntity.ok().body("Added");
+        else return ResponseEntity.badRequest().body("Not added");    }
 }
