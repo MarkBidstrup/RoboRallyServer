@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SavedGamesService implements IGamesService { // @author Xiao Chen & Mark Bidstrup
+public class SavedGamesService implements ISavedGamesService { // @author Xiao Chen & Mark Bidstrup
     ArrayList<GameStateTemplate> savedGames;
 
     public SavedGamesService() {

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 // @author Mark Bidstrup & Xiao Chen
@@ -17,7 +16,7 @@ import java.util.List;
 public class SavedGamesController {
 
     @Autowired
-    private IGamesService gamesService;
+    private ISavedGamesService gamesService;
 
     @GetMapping("/savedGames")
     public ResponseEntity<List> getListOfGames() {

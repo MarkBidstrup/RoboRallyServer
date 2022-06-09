@@ -5,7 +5,7 @@ import com.Gruppe10.RoboRallyServer.Model.GameStateTemplate;
 import java.util.List;
 
 // @author Mark Bidstrup & Xiao Chen
-public interface IGamesService {
+public interface ISavedGamesService {
     List<String> findAll();
     public GameStateTemplate getGameStateTemplate(String boardname_gameID);
     public boolean addGameStateTemplate(GameStateTemplate p);
