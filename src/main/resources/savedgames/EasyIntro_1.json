@@ -344,23 +344,20 @@
   "gameId": 1,
   "players": [
     {
-      "playerName": "Player 1",
-      "playerColor": "red",
+      "playerName": "Player 3",
+      "playerColor": "blue",
       "checkPointTokenReached": 1,
-      "x": 2,
+      "x": 1,
       "y": 0,
-      "heading": "NORTH",
+      "heading": "WEST",
       "program": [
         {
-          "command": "FORWARD",
           "visible": true
         },
         {
-          "command": "FAST_FORWARD",
-          "visible": true
+          "visible": false
         },
         {
-          "command": "LEFT",
           "visible": false
         },
         {
@@ -372,52 +369,54 @@
       ],
       "cards": [
         {
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         },
         {
-          "command": "OPTION_LEFT_RIGHT",
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         },
         {
-          "command": "U_TURN",
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         },
         {
-          "command": "RIGHT",
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         },
         {
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         },
         {
-          "command": "OPTION_LEFT_RIGHT",
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         },
         {
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         },
         {
-          "command": "U_TURN",
-          "visible": true
+          "command": "SPAM_DAMAGE",
+          "visible": false
         }
       ],
-      "SPAMDamageCards": 0
+      "SPAMDamageCards": 8
     },
     {
       "playerName": "Player 2",
       "playerColor": "green",
       "checkPointTokenReached": 1,
-      "x": 3,
+      "x": 2,
       "y": 0,
-      "heading": "WEST",
+      "heading": "EAST",
       "program": [
         {
-          "command": "OPTION_LEFT_RIGHT",
           "visible": true
         },
         {
-          "command": "OPTION_SANDBOX_ROUTINE",
-          "visible": true
+          "command": "BACKWARD",
+          "visible": false
         },
         {
           "visible": false
@@ -430,6 +429,70 @@
         }
       ],
       "cards": [
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": false
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": false
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "command": "SPEED_ROUTINE",
+          "visible": false
+        },
+        {
+          "command": "FAST_FORWARD",
+          "visible": false
+        },
+        {
+          "command": "RIGHT",
+          "visible": false
+        },
+        {
+          "command": "U_TURN",
+          "visible": false
+        }
+      ],
+      "SPAMDamageCards": 0
+    },
+    {
+      "playerName": "Player 1",
+      "playerColor": "red",
+      "checkPointTokenReached": 0,
+      "x": 7,
+      "y": 4,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "command": "SPEED_ROUTINE",
+          "visible": true
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "command": "BACKWARD",
+          "visible": true
+        },
         {
           "command": "OPTION_LEFT_RIGHT",
           "visible": true
@@ -439,13 +502,14 @@
           "visible": true
         },
         {
-          "command": "FORWARD",
           "visible": true
         },
         {
+          "command": "OPTION_WEASEL_ROUTINE",
           "visible": true
         },
         {
+          "command": "OPTION_LEFT_RIGHT",
           "visible": true
         },
         {
@@ -453,18 +517,14 @@
           "visible": true
         },
         {
-          "command": "U_TURN",
-          "visible": true
-        },
-        {
-          "command": "RIGHT",
+          "command": "OPTION_SANDBOX_ROUTINE",
           "visible": true
         }
       ],
       "SPAMDamageCards": 0
     }
   ],
-  "currentPlayerIndex": 1,
+  "currentPlayerIndex": 2,
   "phase": "ACTIVATION",
-  "step": 1
+  "step": 0
 }
