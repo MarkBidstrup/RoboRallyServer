@@ -317,18 +317,21 @@
       "playerName": "Player 3",
       "playerColor": "blue",
       "checkPointTokenReached": 0,
-      "x": 4,
-      "y": 2,
-      "heading": "SOUTH",
+      "x": 2,
+      "y": 3,
+      "heading": "EAST",
       "program": [
         {
+          "command": "OPTION_SANDBOX_ROUTINE",
           "visible": true
         },
         {
+          "command": "OPTION_LEFT_RIGHT",
           "visible": true
         },
         {
-          "visible": true
+          "command": "FORWARD",
+          "visible": false
         },
         {
           "visible": false
@@ -340,35 +343,32 @@
       "cards": [
         {
           "command": "SPEED_ROUTINE",
-          "visible": true
+          "visible": false
         },
         {
-          "command": "BACKWARD",
-          "visible": true
+          "visible": false
         },
         {
-          "command": "U_TURN",
-          "visible": true
+          "visible": false
         },
         {
-          "command": "OPTION_SANDBOX_ROUTINE",
-          "visible": true
+          "command": "SPEED_ROUTINE",
+          "visible": false
         },
         {
-          "command": "OPTION_WEASEL_ROUTINE",
-          "visible": true
-        },
-        {
-          "command": "OPTION_LEFT_RIGHT",
-          "visible": true
+          "visible": false
         },
         {
           "command": "OPTION_SANDBOX_ROUTINE",
-          "visible": true
+          "visible": false
         },
         {
-          "command": "RIGHT",
-          "visible": true
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": false
+        },
+        {
+          "command": "LEFT",
+          "visible": false
         }
       ],
       "SPAMDamageCards": 0
@@ -377,18 +377,20 @@
       "playerName": "Player 2",
       "playerColor": "green",
       "checkPointTokenReached": 0,
-      "x": 1,
+      "x": 4,
       "y": 1,
-      "heading": "SOUTH",
+      "heading": "EAST",
       "program": [
         {
+          "command": "OPTION_SANDBOX_ROUTINE",
           "visible": true
         },
         {
+          "command": "SPEED_ROUTINE",
           "visible": true
         },
         {
-          "visible": true
+          "visible": false
         },
         {
           "visible": false
@@ -400,35 +402,33 @@
       "cards": [
         {
           "command": "U_TURN",
-          "visible": true
+          "visible": false
         },
         {
           "command": "FAST_FORWARD",
-          "visible": true
+          "visible": false
         },
         {
-          "command": "OPTION_SANDBOX_ROUTINE",
-          "visible": true
+          "command": "U_TURN",
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "command": "RIGHT",
+          "visible": false
+        },
+        {
+          "visible": false
         },
         {
           "command": "SPEED_ROUTINE",
-          "visible": true
+          "visible": false
         },
         {
-          "command": "OPTION_SANDBOX_ROUTINE",
-          "visible": true
-        },
-        {
-          "command": "LEFT",
-          "visible": true
-        },
-        {
-          "command": "FORWARD",
-          "visible": true
-        },
-        {
-          "command": "BACKWARD",
-          "visible": true
+          "command": "U_TURN",
+          "visible": false
         }
       ],
       "SPAMDamageCards": 0
@@ -439,21 +439,21 @@
       "checkPointTokenReached": 0,
       "x": 0,
       "y": 1,
-      "heading": "WEST",
+      "heading": "SOUTH",
       "program": [
         {
           "command": "FORWARD",
           "visible": true
         },
         {
-          "command": "OPTION_LEFT_RIGHT",
+          "command": "LEFT",
           "visible": true
         },
         {
-          "command": "FAST_FORWARD",
-          "visible": true
+          "visible": false
         },
         {
+          "command": "U_TURN",
           "visible": false
         },
         {
@@ -465,11 +465,14 @@
           "visible": true
         },
         {
-          "command": "LEFT",
           "visible": true
         },
         {
-          "command": "OPTION_SANDBOX_ROUTINE",
+          "command": "FAST_FORWARD",
+          "visible": true
+        },
+        {
+          "command": "RIGHT",
           "visible": true
         },
         {
@@ -480,14 +483,11 @@
           "visible": true
         },
         {
+          "command": "LEFT",
           "visible": true
         },
         {
-          "command": "RIGHT",
-          "visible": true
-        },
-        {
-          "command": "OPTION_SANDBOX_ROUTINE",
+          "command": "LEFT",
           "visible": true
         }
       ],
@@ -496,5 +496,5 @@
   ],
   "currentPlayerIndex": 2,
   "phase": "ACTIVATION",
-  "step": 2
+  "step": 1
 }
