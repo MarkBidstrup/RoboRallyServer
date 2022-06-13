@@ -27,6 +27,7 @@ public class SavedGamesService implements ISavedGamesService { // @author Xiao C
         activeGames = new ArrayList<>();
         playersJoined = new HashMap<>();
         savedGames.add(loadGame("EasyIntro_1"));
+        savedGames.add(loadGame("EasyIntro_2"));
         savedGames.add(loadGame("CheckpointChallenge_1"));
         savedGames.add(loadGame("ConveyorBeltMayhem_1"));
     }
